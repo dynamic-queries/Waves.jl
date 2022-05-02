@@ -1,4 +1,4 @@
-name = "Waves"
+name = "Waves.jl"
 uuid = "3aeb90b2-c279-43b5-a838-e72c1cae32b3"
 authors = ["Rahul Manavalan <rahul.manavalan@tum.de> and contributors"]
 version = "0.1.0"
