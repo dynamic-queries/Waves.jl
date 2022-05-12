@@ -1,4 +1,3 @@
-include("types.jl")
 using OrdinaryDiffEq
 using Plots
 
@@ -34,11 +33,12 @@ end
 
 
 begin
-    c = 5
+    c = 1
     nx = 1000
     x = LinRange(0,30,nx+1)
     dx = x[2]-x[1]
     tspan = (0,8)
+    t = 0:0.01:3
     p = [c,dx]
     u0 = IC_BC(nx+1,x)
 
@@ -51,7 +51,7 @@ begin
 
     # Define the ODE problem
     prob = ODEProblem(wave!,u0,tspan,p)
-    sol = solve(prob,Tsit5())
+    sol = solve(prob,Tsit5(),saveat=t)
 
     # Reconstruct the data
     solution = munge(sol)
