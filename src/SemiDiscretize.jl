@@ -31,7 +31,6 @@ function discretize(prob::TwoDimensionWE, discretization::FiniteDifferences, ord
         for i = 2:nx-1
             for j = 2:ny-1
                 k = Int((i-1)*ny + j)
-                @show k,i,j
                 du[n+k] = kx*(u[k+1]+u[k-1]-2*u[k]) + ky*(u[k-ny]+u[k+ny]-2*u[k]) + p[4][k]
             end
         end
