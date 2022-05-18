@@ -1,5 +1,6 @@
 using OrdinaryDiffEq
 using Plots
+using FFTW
 
 function wave!(du,u,p,t)
     k = (p[1]/p[2])^2
@@ -11,14 +12,16 @@ function wave!(du,u,p,t)
         du[n+i] = k*(u[i+1]+u[i-1]-2*u[i])
     end
     # Maintain the boundary conditions
-
 end
 
 function IC_BC(res,x)
     u = zeros(res)
     v = zeros(res)
     # u[1:Int(floor(res/3))] = sin.(1:Int(floor(res/3)))
-    u[Int(floor(end/2))] = 1.0
+    # u[Int(floor(end/2))] = 1.0
+    a = 1
+    x0 = x[Int(floor(end/2))]
+    u .= ((x0.-x)./(sqrt(pi)*a^2)) .* exp.(-((x .- x0)/(sqrt(2)*a)).^2)
     u[1] = 0; u[end] = 0;
     return vcat(u,v)
 end
@@ -35,10 +38,11 @@ end
 begin
     c = 1
     nx = 1000
+    tend = 100
     x = LinRange(0,30,nx+1)
     dx = x[2]-x[1]
-    tspan = (0,8)
-    t = 0:0.01:3
+    tspan = (0,tend)
+    t = 0:0.1:tend
     p = [c,dx]
     u0 = IC_BC(nx+1,x)
 
@@ -47,8 +51,8 @@ begin
     scatter(x,unit_map)
 
     # Check the initial condition
-    plot(x,u0[1:Int(end/2)])
-
+    fig = plot(x,u0[1:Int(end/2)])
+    display(fig)
     # Define the ODE problem
     prob = ODEProblem(wave!,u0,tspan,p)
     sol = solve(prob,Tsit5(),saveat=t)

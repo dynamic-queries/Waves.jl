@@ -5,3 +5,7 @@ function munge(sol)
     end
     return M
 end
+
+function gaussian()
+
+end
